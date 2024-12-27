@@ -91,23 +91,41 @@ int checkFeatures(){
 	return 1
 }
 
-int countInDirection(int x, int y, int dirx, int diry){
+int countInDirection(int dirx, int diry){
 	r = 0;
-	int cursorrow = y
-	int cursorcol = x
+	int cursorrow = lastmovey
+	int cursorcol = lastmovex
 	while(cursorrow < SIZE && cursorcol < SIZE && cursorrow >= 0 && cursorcol >= 0){
-		if( turnToChar(lastmoveturn) == board[cursorrow][cursorcol]{
+		if( turnToChar(lastmoveturn) == board[cursorrow][cursorcol] 
+			#ifdef JOKER
+			|| board[cursorrow][cursorcol] == 'J'
+			#endif
+			){
 			r++;
 		}
 		else{
-			return 0;
+			break;
 		}
 	}
 	return r
 }
 
 int gameNotOver(){
-	
+	diag1 = countInDirection(  1,-1)	-1;
+	diag1 += countInDirection(-1, 1);
+	diag2 = countInDirection( -1,-1)	-1;
+	diag2 += countInDirection( 1, 1);
+	vert = countInDirection( 0, 1)		-1;
+	vert += countInDirection( 0, -1);
+	hor = countInDirection( -1, 0)		-1;
+	hor += countInDirection( 1, 0);
+	int over = diag1 >= LEN || diag2 >= LEN || ver >= LEN || hor >= LEN
+	if( over ){
+		printf("game over\n");
+		printf("winner is: %c", turnToChar(lastmoveturn));
+		while(True){}
+	}
+	return 0;
 }
 
 int main(void) {
