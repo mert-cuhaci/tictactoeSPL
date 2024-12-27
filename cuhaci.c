@@ -65,7 +65,7 @@ void printBoard(){
 #ifdef
 
 int checkFeatures(){
-	#ifdef VALID
+	#ifdef SIZE > LEN
 	printf("Feature selection is valid.");
 	printf()
 	#else
