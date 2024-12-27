@@ -16,15 +16,24 @@ int lastmovey = -1
 int lastmoveturn = -1
 //its always unvalid so i will see if something is wrong
 
+//a player gets block until the end of the game if the time runs out
+#ifdef TIME && (PLAYERS == 3)
+	int blocked[3] = {0,0,0}
+#endif
+
+
 void incrementPlayer(){
-	turn += 1;
-	
+	lasmoveturn += 1;
+
 	#ifdef PLAYERS == 2
-		turn = turn % 2;
+		lastmoveturn = lastmoveturn % 2;
 	#endif
 	
 	#ifdef PLAYERS == 3
-		turn = turn % 3
+		while(blocked[lastmoveturn % 3] == 1){
+			lastmoveturn++;
+		}
+		lasmoveturn = lastmoveturn % 3
 	#endif
 }
 
@@ -128,20 +137,53 @@ int gameNotOver(){
 	return 0;
 }
 
+#ifdef TIME
+void timecheck(double t){
+	#ifdef PLAYERS == 2
+		if(t > TIME){
+		printf("game over:\n");
+		printf("player %c lost",turnToChar( lastmoveturn ));
+		while(1){}
+		}
+	#endif
+	
+	#ifdef PLAYERS == 3
+		if(t > TIME){
+			blocked[lastmoveturn] = 1;
+		}
+		if(blocked[0] + blocked[1] + blocked[2] == 2){
+			printf("game over\n");
+			if(blocked[0] == 0){
+				printf("player X won");
+			}
+			if(blocked[1] == 0){
+				printf("player O won");
+			}
+			if(blocked[2] == 0){
+				printf("player P won");
+			}
+			while(1){}
+		}
+	#endif
+}
+#endif
+
+
 int main(void) {
     if ( !checkFeatures()){
     	return 1;
     }
     while(gameNotOver()){
 	    printBoard();
-	    #ifdef time
-	    	time1 = (double) clock() / CLOCKS_PER_SEC;
+	    #ifdef TIME
+	    	time1 = ((double) clock()) / CLOCKS_PER_SEC;
 	    #endif
 	    getInput();
 	    incrementPlayer();
-	    #ifdef time
-	    	time2 = (double) clock() / CLOCKS_PER_SEC;
+	    #ifdef TIME
+	    	time2 = ( (double) clock() ) / CLOCKS_PER_SEC;
 	    #endif
+	    timecheck(time2-time1);
 	    updateBoard();
 	    
 	    }
