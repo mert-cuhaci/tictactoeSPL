@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <time.h>
+
 
 //preprocessor macros
 #define SIZE 3 	//3,5 oder 7
@@ -10,6 +12,20 @@
 
 //global variables
 int turn = 0
+
+void incrementPlayer(){
+	turn += 1;
+	
+	#ifdef PLAYERS == 2
+		turn = turn % 2;
+	#endif
+	
+	#ifdef PLAYERS == 3
+	
+}
+
+
+
 
 #ifdef SIZE == 3
 char board[3][3] =    {	{'.', '.', '.'} , 
@@ -42,9 +58,11 @@ char turnToChar(int t){
 	if(t==1){
 		return 'O';
 	}
+	#ifdef PLAYERS == 3
 	if(t==2){
 		return 'P';
 	}
+	#endif 
 	return 'a';
 }
 
@@ -62,24 +80,48 @@ void printBoard(){
 }
 #ifdef
 
-int checkFeatures(){
+void checkFeatures(){
 	#ifdef SIZE > LEN
 	printf("Feature selection is valid.");
 	#else
 	printf("Feature selection is invalid.");
-	return 0;
 	#endif
 }
 
 
 int main(void) {
     checkFeatures();
-    
-    
-    
-    
-    // This is the main function of the program
-    printf("Hello, World!\n");
-
+    while(True){
+	    printBoard();
+	    #ifdef time
+	    	time1 = (double) clock() / CLOCKS_PER_SEC;
+	    #endif
+	    getInput();
+	    incrementPlayer();
+	    #ifdef time
+	    	time2 = (double) clock() / CLOCKS_PER_SEC;
+	    #endif
+	    updateBoard();
+	    
+	    }
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
