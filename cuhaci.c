@@ -17,6 +17,7 @@ int lastmoveturn = -1
 //its always unvalid so i will see if something is wrong
 
 //a player gets block until the end of the game if the time runs out
+//THIS HAS NOTHING TO DO WITH THE FEAUTURE "BLOCKED"
 #ifdef TIME && (PLAYERS == 3)
 	int blocked[3] = {0,0,0}
 #endif
@@ -38,27 +39,27 @@ void incrementPlayer(){
 }
 
 #ifdef SIZE == 3
-char board[3][3] =    {	{'.', '.', '.'} , 
-						{'.', '.', '.'} , 
-						{'.', '.', '.'}};
+char board[3][3] =    {	{'_', '_', '_'} , 
+						{'_', '_', '_'} , 
+						{'_', '_', '_'}};
 #endif
 
 #ifdef SIZE == 5
-char board[3][3] =    {	{'.', '.', '.', '.', '.'} , 
-						{'.', '.', '.', '.', '.'} , 
-						{'.', '.', '.', '.', '.'} , 
-						{'.', '.', '.', '.', '.'} , 
-						{'.', '.', '.', '.', '.'}}
+char board[5][5] =    {	{'_', '_', '_', '_', '_'} , 
+						{'_', '_', '_', '_', '_'} , 
+						{'_', '_', '_', '_', '_'} , 
+						{'_', '_', '_', '_', '_'} , 
+						{'_', '_', '_', '_', '_'}}
 #endif
 
 #ifdef SIZE == 7
-char board[3][3] =    {	{'.','.','.','.','.', '.', '.'} , 
-						{'.','.','.','.','.', '.', '.'} , 
-						{'.','.','.','.','.', '.', '.'} ,
-						{'.','.','.','.','.', '.', '.'} ,
-						{'.','.','.','.','.', '.', '.'} ,
-						{'.','.','.','.','.', '.', '.'} ,
-						{'.','.','.','.','.', '.', '.'}};
+char board[7][7] =    {	{'_','_','_','_','_', '_', '_'} , 
+						{'_','_','_','_','_', '_', '_'} , 
+						{'_','_','_','_','_', '_', '_'} ,
+						{'_','_','_','_','_', '_', '_'} ,
+						{'_','_','_','_','_', '_', '_'} ,
+						{'_','_','_','_','_', '_', '_'} ,
+						{'_','_','_','_','_', '_', '_'}};
 #endif
 
 char turnToChar(int t){
@@ -195,28 +196,64 @@ void getInput(){
 		board[lastmovex][lastmovey] == turnToChar(nextPlayer());
     } else {
         // Parsing failed
-        printf("Error: These values arent excepted\n");
+        printf("Error: These values arent accepted\n");
     }
     }
 }
 
+#ifdef BLOCKED
+void fillBlocked(){
+	int b = 1
+	if(SIZE == 5){
+		b += 4 
+	}
+	if(SIZE == 7){
+		b += 6
+	}
+	#ifdef LEN == 4
+		b -= 1
+	#endif
+	
+	#ifdef LEN == 5
+		b -= 2
+	#endif
+	
+	while(b > 0){
+		int r = rand() % SIZE;
+		int c = rand() % SIZE;
+	}
+}
+#endif
+
+#ifdef JOKER
+
+#endif
+
+
 int main(void) {
+    srand(time(NULL));
     if ( !checkFeatures()){
     	while(1){}
     }
+    #ifdef BLOCKED
+    	fillBlocked();
+    #endif
+    
+    #ifdef JOKER
+    	fillJoker();
+    #endif
     while(gameNotOver()){
 	    printBoard();
 	    #ifdef TIME
 	    	time1 = ((double) clock()) / CLOCKS_PER_SEC;
 	    #endif
 	    getInput();
-	    incrementPlayer();
 	    #ifdef TIME
 	    	time2 = ( (double) clock() ) / CLOCKS_PER_SEC;
 	    #endif
 	    timecheck(time2-time1);
+	    incrementPlayer();
 	    updateBoard();
-	    
 	    }
     return 0;
 }
