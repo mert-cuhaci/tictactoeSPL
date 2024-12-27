@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <time.h>
 
-
 //preprocessor macros
 #define SIZE 3 	//3,5 oder 7
 #define PLAYERS 2 	// 2 oder 3
@@ -12,6 +11,10 @@
 
 //global variables
 int turn = 0
+int lastmovex = -1
+int lastmovey = -1
+int lastmoveturn = -1
+//its always unvalid so i will see if something is wrong
 
 void incrementPlayer(){
 	turn += 1;
@@ -21,11 +24,9 @@ void incrementPlayer(){
 	#endif
 	
 	#ifdef PLAYERS == 3
-	
+		turn = turn % 3
+	#endif
 }
-
-
-
 
 #ifdef SIZE == 3
 char board[3][3] =    {	{'.', '.', '.'} , 
@@ -80,18 +81,40 @@ void printBoard(){
 }
 #ifdef
 
-void checkFeatures(){
+int checkFeatures(){
 	#ifdef SIZE > LEN
-	printf("Feature selection is valid.");
+		printf("Feature selection is valid.");
 	#else
-	printf("Feature selection is invalid.");
+		printf("Feature selection is invalid.");
+		return 0
 	#endif
+	return 1
 }
 
+int countInDirection(int x, int y, int dirx, int diry){
+	r = 0;
+	int cursorrow = y
+	int cursorcol = x
+	while(cursorrow < SIZE && cursorcol < SIZE && cursorrow >= 0 && cursorcol >= 0){
+		if( turnToChar(lastmoveturn) == board[cursorrow][cursorcol]{
+			r++;
+		}
+		else{
+			return 0;
+		}
+	}
+	return r
+}
+
+int gameNotOver(){
+	
+}
 
 int main(void) {
-    checkFeatures();
-    while(True){
+    if ( !checkFeatures()){
+    	return 1;
+    }
+    while(gameNotOver()){
 	    printBoard();
 	    #ifdef time
 	    	time1 = (double) clock() / CLOCKS_PER_SEC;
