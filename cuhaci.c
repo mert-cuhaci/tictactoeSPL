@@ -168,10 +168,41 @@ void timecheck(double t){
 }
 #endif
 
+int nextPlayer(){
+	#ifdef PLAYERS == 2
+		return (lastmoveturn + 1) % 2
+	#endif
+	#ifdef PLAYERS == 3
+		int t = lastmoveturn + 1
+		while(blocked[t % 3]){
+			t++;
+		}
+		return t % 3
+	#endif
+	return 0;
+}
+
+void getInput(){
+	int num1, num2;
+	while(1){
+    // Prompt the user for input
+    printf("Enter row and column separated by a space: ");
+
+    // Read input from standard input
+    if (scanf("%d %d", &num1, &num2) == 2  && board[row][col] == '_') {
+		lastmovex = num2;
+		lastmovey = num1;
+		board[lastmovex][lastmovey] == turnToChar(nextPlayer());
+    } else {
+        // Parsing failed
+        printf("Error: These values arent excepted\n");
+    }
+    }
+}
 
 int main(void) {
     if ( !checkFeatures()){
-    	return 1;
+    	while(1){}
     }
     while(gameNotOver()){
 	    printBoard();
