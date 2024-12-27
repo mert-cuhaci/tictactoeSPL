@@ -56,23 +56,20 @@ void printBoard(){
 	printf("Turn: %c\n", turnToChar());
 	for(int i=0;i<SIZE;i++){
 		for(int j=0;j<SIZE;j++){
-			printf("")
-	
-
-
-
-
+			printf("%c ",board[i][j]);
+		}
+	}
+}
 #ifdef
 
 int checkFeatures(){
 	#ifdef SIZE > LEN
 	printf("Feature selection is valid.");
-	printf()
 	#else
-	
+	printf("Feature selection is invalid.");
+	return 0;
 	#endif
 }
-
 
 
 int main(void) {
