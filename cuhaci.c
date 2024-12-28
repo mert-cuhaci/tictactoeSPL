@@ -22,7 +22,6 @@ int lastmoveturn = -1
 	int blocked[3] = {0,0,0}
 #endif
 
-
 void incrementPlayer(){
 	lasmoveturn += 1;
 
@@ -34,7 +33,7 @@ void incrementPlayer(){
 		while(blocked[lastmoveturn % 3] == 1){
 			lastmoveturn++;
 		}
-		lasmoveturn = lastmoveturn % 3
+		lastmoveturn = lastmoveturn % 3
 	#endif
 }
 
@@ -87,9 +86,9 @@ void printBoard(){
 		for(int j=0;j<SIZE;j++){
 			printf("%c ",board[i][j]);
 		}
+		printf("\n");
 	}
 }
-#ifdef
 
 int checkFeatures(){
 	#ifdef SIZE > LEN
@@ -112,6 +111,8 @@ int countInDirection(int dirx, int diry){
 			#endif
 			){
 			r++;
+			cursorrow += diry;
+			cursorcol += dirx;
 		}
 		else{
 			break;
@@ -135,7 +136,7 @@ int gameNotOver(){
 		printf("winner is: %c", turnToChar(lastmoveturn));
 		while(True){}
 	}
-	return 0;
+	return 1;
 }
 
 #ifdef TIME
@@ -180,7 +181,6 @@ int nextPlayer(){
 		}
 		return t % 3
 	#endif
-	return 0;
 }
 
 void getInput(){
@@ -190,10 +190,11 @@ void getInput(){
     printf("Enter row and column separated by a space: ");
 
     // Read input from standard input
-    if (scanf("%d %d", &num1, &num2) == 2  && board[row][col] == '_') {
+    if (scanf("%d %d", &num1, &num2) == 2  && board[num1][num2] == '_') {
 		lastmovex = num2;
 		lastmovey = num1;
 		board[lastmovex][lastmovey] == turnToChar(nextPlayer());
+		break;
     } else {
         // Parsing failed
         printf("Error: These values arent accepted\n");
@@ -204,12 +205,14 @@ void getInput(){
 #ifdef BLOCKED
 void fillBlocked(){
 	int b = 1
-	if(SIZE == 5){
-		b += 4 
-	}
-	if(SIZE == 7){
-		b += 6
-	}
+	#ifdef SIZE == 5
+		b += 2 
+	#endif
+	
+	#ifdef SIZE == 7
+		b += 4
+	#endif
+	
 	#ifdef LEN == 4
 		b -= 1
 	#endif
@@ -221,6 +224,10 @@ void fillBlocked(){
 	while(b > 0){
 		int r = rand() % SIZE;
 		int c = rand() % SIZE;
+		if(board[r][c] == '_'){
+			board[r][c] = 'B';
+			b--;
+		}
 	}
 }
 #endif
