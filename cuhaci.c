@@ -204,21 +204,21 @@ void getInput(){
 
 #ifdef BLOCKED
 void fillBlocked(){
-	int b = 1
+	int b = 1;
 	#ifdef SIZE == 5
-		b += 2 
+		b += 2 ;
 	#endif
 	
 	#ifdef SIZE == 7
-		b += 4
+		b += 4;
 	#endif
 	
 	#ifdef LEN == 4
-		b -= 1
+		b -= 1;
 	#endif
 	
 	#ifdef LEN == 5
-		b -= 2
+		b -= 2;
 	#endif
 	
 	while(b > 0){
@@ -233,9 +233,33 @@ void fillBlocked(){
 #endif
 
 #ifdef JOKER
-
+void fillJoker(){
+	int j = 1;
+	#ifdef SIZE == 5
+	j += 1;
+	#endif
+	
+	#ifdef SIZE == 7
+	j += 2;
+	#endif
+	
+	#ifdef LEN == 4
+	j++;
+	#endif
+	
+	#ifdef LEN == 5
+	j += 2;
+	#endif
+	while(j > 0){
+		int r = rand() % SIZE;
+		int c = rand() % SIZE;
+		if(board[r][c] == '_'){
+			board[r][c] = 'J';
+			j--;
+		}
+	}
+}
 #endif
-
 
 int main(void) {
     srand(time(NULL));
