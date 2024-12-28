@@ -273,6 +273,7 @@ int main(void) {
     #ifdef JOKER
     	fillJoker();
     #endif
+    
     while(gameNotOver()){
 	    printBoard();
 	    #ifdef TIME
@@ -284,7 +285,6 @@ int main(void) {
 	    #endif
 	    timecheck(time2-time1);
 	    incrementPlayer();
-	    updateBoard();
 	    }
     return 0;
 }
